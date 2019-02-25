@@ -9,17 +9,17 @@ import base64
 
 @login_required
 def home(request):
-    if request.method == 'POST':
-        salt = "data:image/jpeg;base64,"
-        img = request.POST.get("photoinput", None)
-        if img:
-            img = img.replace(salt, "")
-            img = base64.b64decode(img)
-            file = open('test.jpeg', 'wb')
-            file.write(img)
-            file.close()
-        # print(request.POST)
-    # return HttpResponse("Login success" + request.user)
+    # if request.method == 'POST':
+    #     salt = "data:image/jpeg;base64,"
+    #     img = request.POST.get("photoinput", None)
+    #     if img:
+    #         img = img.replace(salt, "")
+    #         img = base64.b64decode(img)
+    #         file = open('test.jpeg', 'wb')
+    #         file.write(img)
+    #         file.close()
+    #     # print(request.POST)
+    # # return HttpResponse("Login success" + request.user)
     subsjects = Subject.objects.filter(user=request.user)
 
     return render(request, 'index.html', locals())
@@ -56,3 +56,6 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse('login'))
+
+
+

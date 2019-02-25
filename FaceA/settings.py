@@ -25,7 +25,7 @@ SECRET_KEY = '^m&!#8wu(7e8xe5u*^_7c$6^)c3vc!f2&@$&(3a2+8j7n#_3w8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.189.129']
 
 
 # Application definition
@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'FaceA.apps.face_web.apps.FaceWebConfig',
+    'werkzeug_debugger_runserver',
+    'django_extensions',
 ]
+
+SECURE_SSL_REDIRECT = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
