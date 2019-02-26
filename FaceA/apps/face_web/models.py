@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.validators import ASCIIUsernameValidator
+from django.utils import timezone
 
 
 class CustomUser(User):
@@ -61,12 +62,12 @@ class SubjectElective(models.Model):
 
 
 class Result(models.Model):
-    result_datetime = models.DateTimeField(db_column='result_datetime')
+    result_datetime = models.DateTimeField(db_column='result_datetime', default=timezone.now)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
 
     def __str__(self):
-        return ''.join([str(self.student), 'is absent from', str(self.subject), 'at', str(self.datetime)])
+        return ''.join([str(self.student), ' is absent from ', str(self.subject), ' at ', str(self.result_datetime)])
 
     class Meta:
         # managed = False
