@@ -65,7 +65,13 @@ def do_check(request):
             file.close()
 
             class_ = subject.myclass
-            result = face_recog(class_, path)
+            result = do_check_func(class_, path)
 
-    return HttpResponse("Result: " + " ".join(result))
+    return redirect(reverse('query'))
+    return HttpResponse("缺席: " + " ".join(result))
 
+
+@login_required
+def query(request):
+    subsjects = Subject.objects.filter(user=request.user)
+    return render(request, 'query.html', locals())

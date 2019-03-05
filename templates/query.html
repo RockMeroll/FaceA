@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}人脸识别考勤系统{% endblock %}
+{% block body %}
+    <!-- Header section -->
+    <header class="header-section">
+        <div class="header-warp">
+            <div class="container">
+                <a href="#" class="site-logo">
+                    <img src="img/logo.png" alt="">
+                </a>
+                <div class="user-panel">
+                    <a href="#">Logout</a>
+                </div>
+                <div class="nav-switch">
+                    <i class="fa fa-bars"></i>
+                </div>
+                <ul class="main-menu">
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">考勤记录</a></li>
+                    <li><a href="#">人员维护</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <!-- Header section end -->
+
+    <!-- Page top section -->
+    <section class="page-top-section set-bg" data-setbg={% static "img/page-top-bg.jpg" %}>
+        <div class="container text-white">
+            <h3>考勤记录</h3>
+        </div>
+    </section>
+    <!--  Page top end -->
+
+    <!-- Search section -->
+    <section class="multi-search-section">
+        <div class="msf-warp">
+            <div class="container">
+                <h5>缺席名单</h5>
+                <form class="multi-search-form">
+
+                    <input type="text" placeholder="Year">
+                    <input type="text" placeholder="Month">
+                    <input type="text" placeholder="Day">
+
+                    <select id="subject" name="subject" style="height:47px; margin-right:18px">
+                        {% for subject in subsjects %}
+                            <option>{{ subject }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <button class="site-btn">Search</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Search section end -->
+
+
+    <section class=" spad">
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Student-ID</th>
+                    <th>Student Name</th>
+                    <th>Subject</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>2018-01-01</td>
+                    <td>201</td>
+                    <td>Reddy</td>
+                    <td>wwww</td>
+                </tr>
+                <tr>
+                    <td>002</td>
+                    <td>Smita</td>
+                    <td>Pallod</td>
+                    <td>A</td>
+                </tr>
+                <tr>
+                    <td>003</td>
+                    <td>Rabindranath</td>
+                    <td>Sen</td>
+                    <td>A+</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

@@ -3,19 +3,19 @@ from FaceA.apps.face_web.models import *
 import os
 
 
-def face_recog(class_, unknown_faces):
+def do_check_func(class_, unknown_faces):
     known_face_encodings = []
-    known_face_names = []
+    absence = []
     face_locations = []
     face_encodings = []
-    face_names = []
+    attend = []
     students = Student.objects.filter(myclass=class_)
     for i in students:
         path = os.path.join("known_faces", str(class_), str(i)+'.jpg')
         face_image = face_recognition.load_image_file(path)
         face_encoding = face_recognition.face_encodings(face_image)[0]
         known_face_encodings.append(face_encoding)
-        known_face_names.append(str(i))
+        absence.append(str(i))
 
     unknown_faces_image = face_recognition.load_image_file(unknown_faces)
     # unknown_faces_encoding = face_recognition.face_encodings(unknown_faces_image)[0]
@@ -27,10 +27,13 @@ def face_recog(class_, unknown_faces):
         name = "Unknown"
         if True in matches:
             first_match_index = matches.index(True)
-            name = known_face_names[first_match_index]
+            name = absence[first_match_index]
+            absence.remove(name)
 
-        face_names.append(name)
+        attend.append(name)
 
-    return face_names
+    return absence
 
 
+def do_record(class_, absence):
+    pass
