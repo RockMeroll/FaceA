@@ -1,0 +1,21 @@
+{% load staticfiles %}
+<header class="header-section">
+    <div class="header-warp">
+        <div class="container">
+            <a href="#" class="site-logo">
+                <img src={% static "img/logo.png" %} alt="">
+            </a>
+            <div class="user-panel">
+                <a href={% url 'logout' %}>Logout</a>
+            </div>
+            <div class="nav-switch">
+                <i class="fa fa-bars"></i>
+            </div>
+            <ul class="main-menu">
+                <li><a href={% url 'home' %}>首页</a></li>
+                <li><a href={% url 'query' %}>考勤记录</a></li>
+                <li><a href='/admin/'>人员维护</a></li>
+            </ul>
+        </div>
+    </div>
+</header>

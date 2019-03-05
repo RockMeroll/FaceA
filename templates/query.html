@@ -4,26 +4,7 @@
 {% block title %}人脸识别考勤系统{% endblock %}
 {% block body %}
     <!-- Header section -->
-    <header class="header-section">
-        <div class="header-warp">
-            <div class="container">
-                <a href="#" class="site-logo">
-                    <img src="img/logo.png" alt="">
-                </a>
-                <div class="user-panel">
-                    <a href="#">Logout</a>
-                </div>
-                <div class="nav-switch">
-                    <i class="fa fa-bars"></i>
-                </div>
-                <ul class="main-menu">
-                    <li><a href="#">首页</a></li>
-                    <li><a href="#">考勤记录</a></li>
-                    <li><a href="#">人员维护</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
+    {% include 'header.html' %}
     <!-- Header section end -->
 
     <!-- Page top section -->
@@ -38,28 +19,32 @@
     <section class="multi-search-section">
         <div class="msf-warp">
             <div class="container">
-                <h5>缺席名单</h5>
-                <form class="multi-search-form">
+                <h5>缺席名单查询</h5>
+                <form action="/query/" class="multi-search-form" method="GET">
 
-                    <input type="text" placeholder="Year">
-                    <input type="text" placeholder="Month">
-                    <input type="text" placeholder="Day">
+                    <input name="year" type="text" placeholder="Year">
+                    <input name="month" type="text" placeholder="Month">
+                    <input name="day" type="text" placeholder="Day">
 
                     <select id="subject" name="subject" style="height:47px; margin-right:18px">
-                        {% for subject in subsjects %}
+                        {% for subject in subjects %}
                             <option>{{ subject }}</option>
                         {% endfor %}
                     </select>
 
-                    <button class="site-btn">Search</button>
+                    <button type="submit" class="site-btn">Search</button>
                 </form>
             </div>
         </div>
     </section>
     <!-- Search section end -->
+    <section>
+        <div class="text-center logindiv">
+            <h5><span class="text-danger">{{ error }}</span></h5>
+        </div>
+    </section>
 
-
-    <section class=" spad">
+    <section class="spad">
         <div class="container">
             <table class="table">
                 <thead>
@@ -71,24 +56,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>2018-01-01</td>
-                    <td>201</td>
-                    <td>Reddy</td>
-                    <td>wwww</td>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>Smita</td>
-                    <td>Pallod</td>
-                    <td>A</td>
-                </tr>
-                <tr>
-                    <td>003</td>
-                    <td>Rabindranath</td>
-                    <td>Sen</td>
-                    <td>A+</td>
-                </tr>
+                {% for i in results %}
+                    <tr>
+                        <td>{{ i.result_datetime }}</td>
+                        <td>{{ i.student.student_id }}</td>
+                        <td>{{ i.student.student_name }}</td>
+                        <td>{{ i.subject }}</td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>

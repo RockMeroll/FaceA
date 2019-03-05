@@ -3,19 +3,21 @@ from FaceA.apps.face_web.models import *
 import os
 
 
-def do_check_func(class_, unknown_faces):
+def do_check_func(subject, unknown_faces):
     known_face_encodings = []
-    absence = []
+    face_names = []
     face_locations = []
     face_encodings = []
     attend = []
-    students = Student.objects.filter(myclass=class_)
+    absence = []
+    students = Student.objects.filter(myclass=subject.myclass)
     for i in students:
-        path = os.path.join("known_faces", str(class_), str(i)+'.jpg')
+        path = os.path.join("known_faces", str(subject.myclass), str(i)+'.jpg')
         face_image = face_recognition.load_image_file(path)
         face_encoding = face_recognition.face_encodings(face_image)[0]
         known_face_encodings.append(face_encoding)
-        absence.append(str(i))
+        face_names.append(str(i))
+        absence.append(i)
 
     unknown_faces_image = face_recognition.load_image_file(unknown_faces)
     # unknown_faces_encoding = face_recognition.face_encodings(unknown_faces_image)[0]
@@ -27,13 +29,16 @@ def do_check_func(class_, unknown_faces):
         name = "Unknown"
         if True in matches:
             first_match_index = matches.index(True)
-            name = absence[first_match_index]
-            absence.remove(name)
 
-        attend.append(name)
+            absence.remove(students[first_match_index])
 
+            name = face_names[first_match_index]
+            attend.append(name)
+    do_record(subject, absence)
     return absence
 
 
-def do_record(class_, absence):
-    pass
+def do_record(subject, absence):
+    for i in absence:
+        r = Result.objects.create(student=i, subject=subject)
+        r.save()

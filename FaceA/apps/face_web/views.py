@@ -1,18 +1,18 @@
 from django.shortcuts import render
 from django.shortcuts import HttpResponse, redirect, reverse
 from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth.decorators import login_required
 from .forms import *
 from .do_recognition import *
-from django.contrib.auth.decorators import login_required
 from .models import *
 import base64
 import os
-
+import datetime
 
 
 @login_required
 def home(request):
-    subsjects = Subject.objects.filter(user=request.user)
+    subjects = Subject.objects.filter(user=request.user)
     return render(request, 'index.html', locals())
 
 
@@ -64,14 +64,32 @@ def do_check(request):
             file.write(img)
             file.close()
 
-            class_ = subject.myclass
-            result = do_check_func(class_, path)
+            # do check
+            do_check_func(subject, path)
 
-    return redirect(reverse('query'))
-    return HttpResponse("缺席: " + " ".join(result))
+            year = datetime.datetime.now().year
+            month = datetime.datetime.now().month
+            day = datetime.datetime.now().day
+            url = reverse('query') + "?year=%s&month=%s&day=%s&subject=%s" % (year, month, day, str(subject))
+            return redirect(url)
+
+    else:
+        return redirect(reverse('home'))
 
 
 @login_required
 def query(request):
-    subsjects = Subject.objects.filter(user=request.user)
+    subjects = Subject.objects.filter(user=request.user)
+    year = request.GET.get("year", None)
+    month = request.GET.get("month", None)
+    day = request.GET.get("day", None)
+    if year and month and day:
+        try:
+            date = "%4d-%02d-%02d" % (int(year), int(month), int(day))
+            results = Result.objects.filter(result_datetime__icontains=date)
+        except TypeError:
+            error = "请输入正确的查询日期"
+        except ValueError:
+            error = "请输入查询日期"
+
     return render(request, 'query.html', locals())
